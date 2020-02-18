@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="玩机,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="朋友那借了一个树莓派，整理下玩机的注意点。">
+<meta name="keywords" content="玩机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="朋友，树莓派玩过没？">
+<meta property="og:url" content="http://blog.bbbond.cn/2019/12/20/play-pi/index.html">
+<meta property="og:site_name" content="BBBOND的博客">
+<meta property="og:description" content="朋友那借了一个树莓派，整理下玩机的注意点。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.bbbond.cn/img/pi-fans.png">
+<meta property="og:image" content="http://blog.bbbond.cn/img/AcFun/5.gif">
+<meta property="og:image" content="http://blog.bbbond.cn/img/AcFun/8.gif">
+<meta property="og:updated_time" content="2020-02-18T02:29:35.619Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="朋友，树莓派玩过没？">
+<meta name="twitter:description" content="朋友那借了一个树莓派，整理下玩机的注意点。">
+<meta name="twitter:image" content="http://blog.bbbond.cn/img/pi-fans.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.bbbond.cn/2019/12/20/play-pi/">
+
+
+
+
+
+  <title>朋友，树莓派玩过没？ | BBBOND的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BBBOND的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.bbbond.cn/2019/12/20/play-pi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jinweiyang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/img/bbbond.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BBBOND的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">朋友，树莓派玩过没？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-20T00:44:00+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/12/20/play-pi/" class="leancloud_visitors" data-flag-title="朋友，树莓派玩过没？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>朋友那借了一个树莓派，整理下玩机的注意点。</p>
+<a id="more"></a>
+<h2 id="1-装机"><a class="header-anchor" href="#1-装机"></a>1. 装机</h2>
+<h3 id="1-1-风扇的安装"><a class="header-anchor" href="#1-1-风扇的安装"></a>1.1 风扇的安装</h3>
+<p><strong>一定要注意正确安装引脚，不然可能会造成不可预知的后果（至少是无法正常启动）</strong><br>
+而我则更惨，间接报废了一张TF卡（可能是这个原因造成的）<br>
+为了更好地展示安装位置，我在下图标注了出来。<br>
+一定要注意要接4号和6号针脚！！！<br>
+<img src="/img/pi-fans.png" alt="upload successful"></p>
+<blockquote>
+<blockquote>
+<p>这里附上树莓派4的<a href="http://shumeipai.nxez.com/wp-content/uploads/2018/09/rpi_SCH_4b_4p0_reduced.pdf" target="_blank" rel="noopener">官方原理图</a><br>
+其他的树莓派<a href="http://shumeipai.nxez.com/raspberry-pi-schematics" target="_blank" rel="noopener">点这里</a></p>
+</blockquote>
+</blockquote>
+<h2 id="2-做系统"><a class="header-anchor" href="#2-做系统"></a>2. 做系统</h2>
+<h3 id="2-1-下载系统镜像"><a class="header-anchor" href="#2-1-下载系统镜像"></a>2.1 下载系统镜像</h3>
+<ul>
+<li><a href="https://www.raspberrypi.org/downloads/" target="_blank" rel="noopener">官方下载页</a></li>
+<li><a href="http://shumeipai.nxez.com/download#os" target="_blank" rel="noopener">国内下载地址(非广告，随手找的而已)</a></li>
+</ul>
+<p>树莓派官方支持的操作系统叫“Raspbian”，给予Debian。除此之外树莓派还支持了很多三方的操作系统，大家可以按需下载。<br>
+下载后记得解压，毕竟 <code>.zip</code> 不是镜像的后缀嘛（我觉得一定有人不知道）。<br>
+<img src="/img/AcFun/5.gif" alt></p>
+<h3 id="2-2-将系统镜像写入系统盘-tf卡"><a class="header-anchor" href="#2-2-将系统镜像写入系统盘-tf卡"></a>2.2 将系统镜像写入系统盘（TF卡）</h3>
+<ul>
+<li><a href="https://www.balena.io/etcher/" target="_blank" rel="noopener">写入工具 balenaEtcher 下载</a></li>
+</ul>
+<p>如写入就不用说了吧，这工具很小白。</p>
+<p>如果你不想装软件，顺便装装X，那么来 <s>左边跟我一起画个龙，在你右边 画一道彩虹，走起</s>，打开你的终端。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 卸载磁盘</span></span><br><span class="line">sudo diskutil umount /dev/disk2</span><br><span class="line"><span class="meta">#</span><span class="bash"> 写入镜像</span></span><br><span class="line">sudo dd bs=1m if=./2019-09-26-raspbian-buster-full.img of=/dev/rdisk2</span><br></pre></td></tr></table></figure>
+<h2 id="3-开机配置"><a class="header-anchor" href="#3-开机配置"></a>3. 开机配置</h2>
+<h3 id="3-1-与你的派保持一种隐秘的连接-误"><a class="header-anchor" href="#3-1-与你的派保持一种隐秘的连接-误"></a>3.1 与你的派保持一种隐秘的连接（误）</h3>
+<p>如果你有鼠标、键盘、显示器，那么你直接走正常流程就好了。我就没有你那么富有，一个没有，甚至没有网线，只有一台笔记本。如果你也和我一样，那么fallow me。</p>
+<ol>
+<li>创建 <code>boot/ssh</code>空文件就行，这一步允许你之后通过ssh连接</li>
+<li>创建 <code>boot/wpa_supplicant.conf</code>，这一步允许你的派在开机后自动连接WiFi，内容如下：</li>
+</ol>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev</span><br><span class="line">update_config=1</span><br><span class="line">ap_scan=1</span><br><span class="line">fast_reauth=1</span><br><span class="line">country=CN</span><br><span class="line">network=&#123;</span><br><span class="line">    ssid="你的WiFi名"</span><br><span class="line">    psk="你的WiFi密码"</span><br><span class="line">    key_mgmt=WPA-PSK</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>保存退出磁盘</li>
+</ol>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 退出磁盘</span></span><br><span class="line">diskutil eject /dev/disk2</span><br><span class="line"><span class="meta">#</span><span class="bash"> 诶诶诶，是不是发现退出失败了，哈哈哈，来来来，先退出目录</span></span><br><span class="line">cd ~</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-插卡-开机"><a class="header-anchor" href="#3-2-插卡-开机"></a>3.2 插卡、开机</h3>
+<ol>
+<li>ssh登录</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 默认用户名是 pi</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 默认密码是 raspberry</span></span><br><span class="line"></span><br><span class="line">ssh pi@ip</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 记得改密码啊喂~</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>开启vnc</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 树莓派的设置工具，有空自己研究下</span></span><br><span class="line">sudo raspi-config</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 选择 5 Interfacing Options</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 选择 P3 VNC</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 选择 Yes</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> esc 退出</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>配置显示设置</li>
+</ol>
+<p>替换/boot/config.txt，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hdmi_force_hotplug=1</span><br><span class="line">hdmi_ignore_edid=0xa5000080</span><br><span class="line">hdmi_group=2</span><br><span class="line">hdmi_mode=16</span><br></pre></td></tr></table></figure>
+<p>保持良好的习惯，修改前先备份！</p>
+<ol start="4">
+<li>使用vnc连接</li>
+</ol>
+<p><a href="https://www.realvnc.com/en/connect/download/viewer/" target="_blank" rel="noopener">连接软件不用多考虑了吧，VNC Viewer 走起</a></p>
+<h3 id="4-接下来你使劲地耍吧"><a class="header-anchor" href="#4-接下来你使劲地耍吧"></a>4 接下来你使劲地耍吧</h3>
+<p>docker、smb、node、Python、Aria、rpio玩起来!<br>
+预知后事如何，我有空再说。逃~<br>
+<img src="/img/AcFun/8.gif" alt></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/玩机/" rel="tag"># 玩机</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/05/fullstack-service-discovery-consul/" rel="next" title="【全栈系列】服务发现（consul篇）">
+                <i class="fa fa-chevron-left"></i> 【全栈系列】服务发现（consul篇）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/img/bbbond.jpg" alt="Jinweiyang">
+            
+              <p class="site-author-name" itemprop="name">Jinweiyang</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/BBBOND" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jwy8645@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/BBBOND" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-装机"><span class="nav-number">1.</span> <span class="nav-text">1. 装机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-风扇的安装"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 风扇的安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-做系统"><span class="nav-number">2.</span> <span class="nav-text">2. 做系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-下载系统镜像"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 下载系统镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-将系统镜像写入系统盘-tf卡"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 将系统镜像写入系统盘（TF卡）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-开机配置"><span class="nav-number">3.</span> <span class="nav-text">3. 开机配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-与你的派保持一种隐秘的连接-误"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 与你的派保持一种隐秘的连接（误）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-插卡-开机"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 插卡、开机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-接下来你使劲地耍吧"><span class="nav-number">3.3.</span> <span class="nav-text">4 接下来你使劲地耍吧</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-[object Object]"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinweiyang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("PDyc1k64m4yPjSjTP2Ct5rpP-gzGzoHsz", "yo6icFiCK0aWohGIB8jGleUk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="微信小程序,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前段时间接触了下微信小程序，对于写了几个月RN的我，小程序的语法还是不太容易让我接受，于是我往里面加了点之前用得还挺顺手的东西(mobx、async、await)，于是整理了下，出了这么一个微信小程序自制脚手架，分享出来共同探讨下。 项目地址：https://github.com/bbbond/wx-demo">
+<meta name="keywords" content="微信小程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序自制脚手架">
+<meta property="og:url" content="http://blog.bbbond.cn/2018/02/04/Mini-Program-Custom-Scaffold/index.html">
+<meta property="og:site_name" content="BBBOND的博客">
+<meta property="og:description" content="前段时间接触了下微信小程序，对于写了几个月RN的我，小程序的语法还是不太容易让我接受，于是我往里面加了点之前用得还挺顺手的东西(mobx、async、await)，于是整理了下，出了这么一个微信小程序自制脚手架，分享出来共同探讨下。 项目地址：https://github.com/bbbond/wx-demo">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.bbbond.cn/img/AcFun/2.gif">
+<meta property="og:updated_time" content="2020-02-09T15:22:37.141Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序自制脚手架">
+<meta name="twitter:description" content="前段时间接触了下微信小程序，对于写了几个月RN的我，小程序的语法还是不太容易让我接受，于是我往里面加了点之前用得还挺顺手的东西(mobx、async、await)，于是整理了下，出了这么一个微信小程序自制脚手架，分享出来共同探讨下。 项目地址：https://github.com/bbbond/wx-demo">
+<meta name="twitter:image" content="http://blog.bbbond.cn/img/AcFun/2.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.bbbond.cn/2018/02/04/Mini-Program-Custom-Scaffold/">
+
+
+
+
+
+  <title>微信小程序自制脚手架 | BBBOND的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BBBOND的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.bbbond.cn/2018/02/04/Mini-Program-Custom-Scaffold/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jinweiyang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/img/bbbond.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BBBOND的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微信小程序自制脚手架</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-04T20:05:42+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/04/Mini-Program-Custom-Scaffold/" class="leancloud_visitors" data-flag-title="微信小程序自制脚手架">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前段时间接触了下微信小程序，对于写了几个月RN的我，小程序的语法还是不太容易让我接受，于是我往里面加了点之前用得还挺顺手的东西(mobx、async、await)，于是整理了下，出了这么一个微信小程序自制脚手架，分享出来共同探讨下。<br>
+项目地址：<a href="https://github.com/bbbond/wx-demo" target="_blank" rel="noopener">https://github.com/bbbond/wx-demo</a></p>
+<a id="more"></a>
+<h2 id="写在前面"><a class="header-anchor" href="#写在前面"></a>写在前面</h2>
+<p>首先声明，本脚手架适合习惯小程序自带<code>wxml</code>、<code>wxss</code>方式写法的小伙伴们（我是不太喜欢这样的方式，写到想吐）<img src="/img/AcFun/2.gif" alt></p>
+<p>其次对于项目较大的小程序来说，不太推荐本框架，默认的写法下项目不太好管理，推荐<a href="https://tencent.github.io/wepy/" target="_blank" rel="noopener"><strong>wepy</strong></a>，<a href="https://github.com/Tencent/wepy" target="_blank" rel="noopener">GitHub地址</a>，不过本人还未使用过，只是看好多博客有推荐。之后有机会去体验下。言归正传开始介绍下这个框架。</p>
+<h2 id="脚手架结构"><a class="header-anchor" href="#脚手架结构"></a>脚手架结构</h2>
+<h3 id="目录结构"><a class="header-anchor" href="#目录结构"></a>目录结构</h3>
+<p>首先根据习惯我的项目如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">./</span><br><span class="line">├── README.md</span><br><span class="line">├── app.js</span><br><span class="line">├── app.json</span><br><span class="line">├── app.wxss</span><br><span class="line">├── assets</span><br><span class="line">├── constants</span><br><span class="line">│   └── CONFIG.js</span><br><span class="line">├── libs</span><br><span class="line">│   ├── combine.js</span><br><span class="line">│   ├── mobx.min.js</span><br><span class="line">│   ├── moment.min.js</span><br><span class="line">│   ├── observer.js</span><br><span class="line">│   ├── runtime.js</span><br><span class="line">│   └── storeCache.js</span><br><span class="line">├── pages</span><br><span class="line">│   └── index</span><br><span class="line">│       ├── index.js</span><br><span class="line">│       ├── index.wxml</span><br><span class="line">│       ├── index.wxss</span><br><span class="line">│       ├── indexStore.js</span><br><span class="line">│       ├── request.js</span><br><span class="line">│       └── search</span><br><span class="line">│           ├── search.js</span><br><span class="line">│           ├── search.wxml</span><br><span class="line">│           └── search.wxss</span><br><span class="line">├── project.config.json</span><br><span class="line">├── store</span><br><span class="line">│   └── stores.js</span><br><span class="line">└── utils</span><br><span class="line">    ├── baseRequest.js</span><br><span class="line">    └── fetchHelper.js</span><br></pre></td></tr></table></figure>
+<h3 id="网络封装"><a class="header-anchor" href="#网络封装"></a>网络封装</h3>
+<p>为了统一请求风格，对请求框架进行了一次简单封装。（可自行根据业务进行修改）</p>
+<ul>
+<li>
+<p>接口返回JSON结果风格：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>statusCode</td>
+<td>int</td>
+<td>错误状态码，当值不等于200时表示返回异常结果</td>
+</tr>
+<tr>
+<td>data.code</td>
+<td>int</td>
+<td>错误码，当值不等于0时表示返回异常结果</td>
+</tr>
+<tr>
+<td>data.message</td>
+<td>string</td>
+<td>错误信息，错误所对应的</td>
+</tr>
+<tr>
+<td>data</td>
+<td>object</td>
+<td>服务端返回数据</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>底层封装（以GET方式为例）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fetchHelper.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> get = <span class="function">(<span class="params">url, headers</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        logRequest(url);</span><br><span class="line">        wx.request(&#123;</span><br><span class="line">            url: url,</span><br><span class="line">            header: headers || &#123;&#125;,</span><br><span class="line">            success: <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> data = res.data;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">Number</span>(res.statusCode) !== <span class="number">200</span>) &#123;</span><br><span class="line">                    data = &#123;</span><br><span class="line">                        ...data,</span><br><span class="line">                        code: res.statusCode,</span><br><span class="line">                        msg: res.data.message,</span><br><span class="line">                    &#125;;</span><br><span class="line">                &#125;</span><br><span class="line">                logSuccess(<span class="string">'GET'</span>, url, headers, <span class="literal">undefined</span>, data);</span><br><span class="line">                <span class="comment">// 将服务端返回的结果整理好抛给上层</span></span><br><span class="line">                resolve(data);</span><br><span class="line">            &#125;,</span><br><span class="line">            fail: <span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">                logFailed(<span class="string">'GET'</span>, url, headers, <span class="literal">undefined</span>, error);</span><br><span class="line">                <span class="comment">// 由于本机产生的问题直接异常抛出</span></span><br><span class="line">                reject(&#123;<span class="attr">code</span>: <span class="number">1</span>, <span class="attr">msg</span>: <span class="string">"网络请求失败"</span>, ...error&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>上层封装（以GET为例）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// baseRequest.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> baseGetRequest = <span class="function">(<span class="params">api, params, header</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> requestHeader = &#123;</span><br><span class="line">    ...getBaseHeader(),</span><br><span class="line">    ...header</span><br><span class="line">  &#125;;</span><br><span class="line">  params &amp;&amp; <span class="built_in">Object</span>.keys(params).map(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">    api = api.replace(<span class="string">`&#123;<span class="subst">$&#123;key&#125;</span>&#125;`</span>, params[key])</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    get(api, requestHeader)</span><br><span class="line">      .then(<span class="keyword">async</span> result =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (result.code) &#123;</span><br><span class="line">          <span class="comment">// 返回结果存在code则抛出异常信息，（针对不同错误类型进行不同的处理）</span></span><br><span class="line">          reject(result.msg || <span class="string">'未知错误'</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// 无错误正常返回结果</span></span><br><span class="line">          resolve(result);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">        reject(error.msg)</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这一层demo中只是简单的进行封装，在具体业务下需要自行进行处理，（例如token失效的处理）</p>
+</li>
+<li>
+<p>应用层使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// request.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> API = &#123;</span><br><span class="line">  IN_THEATERS: <span class="string">`<span class="subst">$&#123;domain&#125;</span>/movie/in_theaters?city=&#123;city&#125;&amp;start=&#123;start&#125;`</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getInTheatersReq = <span class="function">(<span class="params">city, start = <span class="number">0</span></span>) =&gt;</span> baseGetRequest(</span><br><span class="line">  API.IN_THEATERS, &#123;city, start&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>使用没什么好说的，看上面。</p>
+</li>
+</ul>
+<h3 id="mobx状态管理及缓存"><a class="header-anchor" href="#mobx状态管理及缓存"></a>mobx状态管理及缓存</h3>
+<ul>
+<li>
+<p>mobx介绍<br>
+如果还没接触过mobx，可以去<a href="https://github.com/mobxjs/mobx" target="_blank" rel="noopener">mobx GitHub</a>了解下，这是一款连redux创始人多说好的状态管理框架。</p>
+</li>
+<li>
+<p>mobx+cache<br>
+首先得要对mobx的store进行处理，添加初始化值(initialState)和cache白名单(xxxWhiteList)，并在mobx初始化的时候赋值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// indexStore.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** ================== 初始化值 ================== **/</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">  subjects: [],</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** ================== cache白名单 ================== **/</span></span><br><span class="line"><span class="keyword">const</span> indexWhiteList = [</span><br><span class="line">  <span class="string">'subjects'</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IndexStore</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    extendObservable(<span class="keyword">this</span>, &#123;</span><br><span class="line">      subjects: <span class="keyword">this</span>.store &amp;&amp; <span class="keyword">this</span>.store.subjects || initialState.subjects,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getInTeater = <span class="keyword">async</span> (city, start = <span class="number">0</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> inTeater;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">this</span>.subjects = inTeater.subjects;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  IndexStore,</span><br><span class="line">  indexWhiteList</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>之后还需要一个方法初始化Store，监听Store变化</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// storeCache.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> settingStoreAutoRun = <span class="function">(<span class="params">key, store, whiteList</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 将缓存塞入store</span></span><br><span class="line">  store.prototype.store = <span class="built_in">JSON</span>.parse(wx.getStorageSync(key) || <span class="string">'&#123;&#125;'</span>) || &#123;&#125;;</span><br><span class="line">  <span class="keyword">let</span> storeObj = <span class="keyword">new</span> store();</span><br><span class="line">  mobx.autorun(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> app = mobx.toJS(storeObj);</span><br><span class="line">    <span class="keyword">let</span> temp = &#123;&#125;;</span><br><span class="line">    whiteList.map(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">      temp[key] = app[key];</span><br><span class="line">    &#125;);</span><br><span class="line">    wx.setStorage(&#123;</span><br><span class="line">      key: key,</span><br><span class="line">      data: <span class="built_in">JSON</span>.stringify(temp)</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> storeObj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后找个地方中将所有Store都初始化</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stores.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; settingStoreAutoRun, getCacheKey &#125; = <span class="built_in">require</span>(<span class="string">'../libs/storeCache.js'</span>);</span><br><span class="line"><span class="keyword">let</span> &#123; IndexStore, indexWhiteList &#125; = <span class="built_in">require</span>(<span class="string">'../pages/index/indexStore'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stores = &#123;</span><br><span class="line">  index: settingStoreAutoRun(getCacheKey(<span class="string">'INDEX'</span>), IndexStore, indexWhiteList),</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = stores;</span><br></pre></td></tr></table></figure>
+<p>最后在App.js中将初始化后的stores放入globalData中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//app.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stores = <span class="built_in">require</span>(<span class="string">'./store/stores.js'</span>);</span><br><span class="line"></span><br><span class="line">App(observer(&#123;</span><br><span class="line">  globalData: &#123;</span><br><span class="line">    ...stores</span><br><span class="line">  &#125;,</span><br><span class="line">  onLaunch: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<p>细心的小伙伴们一定发现上面突然乱入了一个<code>observer</code>，这也是mobx的一个用法，无论是<code>App</code>还是<code>page</code>都要包一层，这样才能接收到store的变化</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">App(observer(app));</span><br><span class="line"></span><br><span class="line">Page(observer(page));</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="组件化开发"><a class="header-anchor" href="#组件化开发"></a>组件化开发</h3>
+<h4 id="组件开发"><a class="header-anchor" href="#组件开发"></a>组件开发</h4>
+<p>组件化的好处就不多说了，在开发过程中，不但能减少很多开发时间，还能让代码更清晰明了（其实更能应对需求变动）。<br>
+编写一个组件需要准备三个文件<code>.wxml</code>、<code>.wxss</code>、<code>.js</code>。</p>
+<ul>
+<li>
+<p>.wxml<br>
+组件的wxml和其他界面的wxml没什么区别，就不具体说明了。</p>
+</li>
+<li>
+<p>.wxss<br>
+组件的样式文件，与其他样式文件无异，需要注意的是避免由于<strong>类选择器重名</strong>而造成的影响。</p>
+</li>
+<li>
+<p>.js（以demo中的search为例）<br>
+props为mobx传入的属性，用于接收不可直接改变的值。<br>
+在.wxml中通过使用。<br>
+<strong>注意：需要接收store的实例，若直接接收store的某个属性，那么该属性变化后不会触发界面重新渲染</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">props: &#123;</span><br><span class="line">  getInTeater: app.globalData.index.getInTeater,</span><br><span class="line">  index: app.globalData.index,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>data为mobx中组件的状态，类似于React的state。<br>
+<strong>注意：由于组件的属性、方法最后将会和调用处属性、方法合并，因此注意不要和调用处重名</strong><br>
+<strong>建议：对于data将组件所需要的状态存在同一个对象中（入demo中的search），对于组件内的方法，我的做法是在方法名前加上<code>__</code>，对于组件抛出的方法正常使用驼峰命名即可</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">data: &#123;</span><br><span class="line">  search: &#123;</span><br><span class="line">    currentCity: <span class="string">''</span>,</span><br><span class="line">    city: app.globalData.index.city,</span><br><span class="line">    title: app.globalData.index.title,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br><span class="line">__onInputCity: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">    search: &#123;</span><br><span class="line">      ...this.data.search,</span><br><span class="line">      currentCity: e.detail.value</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,</span><br><span class="line">__onSearch: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>最后导出组件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  props,</span><br><span class="line">  data,</span><br><span class="line">  __onInputCity,</span><br><span class="line">  __onSearch</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="组件使用"><a class="header-anchor" href="#组件使用"></a>组件使用</h4>
+<p>组件的使用也需要在<code>.wxml</code>、<code>.wxss</code>、<code>.js</code>三个地方声明。</p>
+<ul>
+<li>
+<p>.wxml<br>
+wxml中引入组件界面，这没什么好说的。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">src</span>=<span class="string">"./search/search.wxml"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>.wxss<br>
+wxss中引入组件样式，这也没什么好说的。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">import</span> <span class="string">"./search/search.wxss"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>.js<br>
+组件的使用方式如下：<br>
+其中关键是将组件的属性、方法和自身的属性、方法进行合并。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//index.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; combine &#125; = <span class="built_in">require</span>(<span class="string">'../../libs/combine'</span>);</span><br><span class="line"><span class="keyword">let</span> search = <span class="built_in">require</span>(<span class="string">'./search/search'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> page = &#123;</span><br><span class="line">  props,</span><br><span class="line">  data,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">combine(page, search);</span><br><span class="line">Page(observer(page));</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>combine方法<br>
+合并方法参考了慕课的一片文章，<a href="https://www.imooc.com/article/19908" target="_blank" rel="noopener">原文链接</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法来自 https://www.imooc.com/article/19908</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> combine = <span class="function">(<span class="params">target, ...source</span>) =&gt;</span> &#123;</span><br><span class="line">  source.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">arg</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">'object'</span> === <span class="keyword">typeof</span> arg) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> p <span class="keyword">in</span> arg) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">'object'</span> === <span class="keyword">typeof</span> arg[p]) &#123;</span><br><span class="line">          <span class="comment">// 对于对象，直接采用 Object.assign</span></span><br><span class="line">          target[p] = target[p] || &#123;&#125;;</span><br><span class="line">          <span class="built_in">Object</span>.assign(target[p], arg[p])</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">'function'</span> === <span class="keyword">typeof</span> arg[p]) &#123;</span><br><span class="line">          <span class="comment">// 函数进行融合，先调用组件事件，然后调用父页面事件</span></span><br><span class="line">          <span class="keyword">let</span> fun = target[p] ? target[p] : <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          &#125;;</span><br><span class="line">          <span class="keyword">delete</span> target[p];</span><br><span class="line">          target[p] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            arg[p].apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">            fun.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 基础数据类型，直接覆盖</span></span><br><span class="line">          target[p] = target[p] || arg[p]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="其他注意点"><a class="header-anchor" href="#其他注意点"></a>其他注意点</h2>
+<h3 id="async-await的引用"><a class="header-anchor" href="#async-await的引用"></a>async/await的引用</h3>
+<p><code>async/await</code> 用了都说好，谁用谁知道，可惜小程序不支持，那我们只能自己引入了。<br>
+<strong>不过由于限制必须在每个使用的文件中都加入如下代码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> regeneratorRuntime = <span class="built_in">require</span>(<span class="string">'../../libs/runtime'</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="小程序的一些限制"><a class="header-anchor" href="#小程序的一些限制"></a>小程序的一些限制</h3>
+<ul>
+<li>
+<p>代码体积限制<br>
+由于小程序的理念，其代码体积必须<strong>小于2M</strong>。经试验，若代码体积大于2M在微信Android版8.5.3中无法打开，会报内部异常。</p>
+</li>
+<li>
+<p>最低版本库设置</p>
+<blockquote>
+<p>若用户的基础库版本低于要求，则提示更新微信版本。此设置需要在iOS 6.5.8或安卓6.5.7及以上微信客户端版本生效</p>
+</blockquote>
+<p>以上为微信原话，看到这句话瞬间感觉头皮发麻，也就是说对于微信6.5.7以下（iOS 6.5.8）的版本我们得要手动判断是否支持，并作相应处理。<br>
+虽然有 <code>wx.canIUse</code> 可以进行API可用性的判断，但是这个方法也是之后的基础库才加入的，因此有一个断层，让人没法好好玩耍。最后索性使用 <code>wx.getSystemInfo</code> 进行版本判断，对过低版本直接屏蔽，显示不可用，并提示更新，<code>wx.getSystemInfo</code>具体说明<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/systeminfo.html" target="_blank" rel="noopener">点这里</a></p>
+</li>
+<li>
+<p>其他限制<br>
+嗯，等我想到再补充。</p>
+</li>
+</ul>
+<h2 id="最后"><a class="header-anchor" href="#最后"></a>最后</h2>
+<p>这是我第一次写脚手架，一定会有不足之处，感兴趣的小伙伴们可以一起来完善它。</p>
+<p>脚手架项目地址：<a href="https://github.com/bbbond/wx-demo" target="_blank" rel="noopener">https://github.com/bbbond/wx-demo</a></p>
+<p>转载请注明来源：<a href="http://blog.bbbond.cn/2018/02/04/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%88%B6%E8%84%9A%E6%89%8B%E6%9E%B6/">http://blog.bbbond.cn/2018/02/04/微信小程序自制脚手架/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微信小程序/" rel="tag"># 微信小程序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/29/Android-ProGuard-Note/" rel="next" title="Android混淆笔记(修改中)">
+                <i class="fa fa-chevron-left"></i> Android混淆笔记(修改中)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/26/2018Summary-2019Plan/" rel="prev" title="2018年总结+2019计划(flag)">
+                2018年总结+2019计划(flag) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/img/bbbond.jpg" alt="Jinweiyang">
+            
+              <p class="site-author-name" itemprop="name">Jinweiyang</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/BBBOND" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jwy8645@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/BBBOND" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚手架结构"><span class="nav-number">2.</span> <span class="nav-text">脚手架结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">2.1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络封装"><span class="nav-number">2.2.</span> <span class="nav-text">网络封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mobx状态管理及缓存"><span class="nav-number">2.3.</span> <span class="nav-text">mobx状态管理及缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组件化开发"><span class="nav-number">2.4.</span> <span class="nav-text">组件化开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#组件开发"><span class="nav-number">2.4.1.</span> <span class="nav-text">组件开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组件使用"><span class="nav-number">2.4.2.</span> <span class="nav-text">组件使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他注意点"><span class="nav-number">3.</span> <span class="nav-text">其他注意点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#async-await的引用"><span class="nav-number">3.1.</span> <span class="nav-text">async/await的引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序的一些限制"><span class="nav-number">3.2.</span> <span class="nav-text">小程序的一些限制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-[object Object]"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinweiyang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("PDyc1k64m4yPjSjTP2Ct5rpP-gzGzoHsz", "yo6icFiCK0aWohGIB8jGleUk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

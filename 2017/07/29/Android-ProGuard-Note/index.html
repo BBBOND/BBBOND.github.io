@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="android,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="混淆是常用的减小app大小，增加app安全性的方法。">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android混淆笔记(修改中)">
+<meta property="og:url" content="http://blog.bbbond.cn/2017/07/29/Android-ProGuard-Note/index.html">
+<meta property="og:site_name" content="BBBOND的博客">
+<meta property="og:description" content="混淆是常用的减小app大小，增加app安全性的方法。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-02-09T15:22:37.131Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android混淆笔记(修改中)">
+<meta name="twitter:description" content="混淆是常用的减小app大小，增加app安全性的方法。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.bbbond.cn/2017/07/29/Android-ProGuard-Note/">
+
+
+
+
+
+  <title>Android混淆笔记(修改中) | BBBOND的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BBBOND的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.bbbond.cn/2017/07/29/Android-ProGuard-Note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jinweiyang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/img/bbbond.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BBBOND的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android混淆笔记(修改中)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-29T13:08:00+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/29/Android-ProGuard-Note/" class="leancloud_visitors" data-flag-title="Android混淆笔记(修改中)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>混淆是常用的减小app大小，增加app安全性的方法。</p>
+<a id="more"></a>
+<h2 id="作用"><a class="header-anchor" href="#作用"></a>作用</h2>
+<blockquote>
+<p>          代码混淆由ProGuard提供支持，ProGuard会检测和移除封装应用中未使用的类、字段、方法和属性，包括自带代码库中的未使用项（这使其成为以变通方式解决64k引用限制的有用工具）。ProGuard还可优化字节码，移除未使用的代码指令，以及用短名称混淆其余的类、字段和方法。混淆过的代码可令您的APK难以被逆向工程，这在应用使用许可验证等安全敏感性功能时特别有用。</p>
+</blockquote>
+<p>以上为Android官网<a href="https://developer.android.com/studio/build/shrink-code.html" target="_blank" rel="noopener">原文</a>描述，其主要作用主要有那么几点：</p>
+<ul>
+<li>减少方法数</li>
+<li>增加反编译的难度</li>
+<li>app瘦身</li>
+</ul>
+<h2 id="一言不合上实例"><a class="header-anchor" href="#一言不合上实例"></a>一言不合上实例</h2>
+<p>以下为收集整理的混淆配置，复制到项目就可使用</p>
+<ul>
+<li>
+<p>通用配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开启即可关闭混淆</span></span><br><span class="line"><span class="comment">#-dontobfuscate</span></span><br><span class="line"><span class="comment">#---------------Begin: proguard configuration common for all Android apps ----------#</span></span><br><span class="line"><span class="comment">#指定代码的压缩级别</span></span><br><span class="line">-optimizationpasses 5</span><br><span class="line"><span class="comment">#包名不混合大小写</span></span><br><span class="line">-dontusemixedcaseclassnames</span><br><span class="line"><span class="comment">#不去忽略非公共的库类</span></span><br><span class="line">-dontskipnonpubliclibraryclasses</span><br><span class="line">-dontskipnonpubliclibraryclassmembers</span><br><span class="line"><span class="comment">#优化  不优化输入的类文件</span></span><br><span class="line">-dontoptimize</span><br><span class="line"><span class="comment">#预校验</span></span><br><span class="line">-dontpreverify</span><br><span class="line"><span class="comment">#混淆时是否记录日志</span></span><br><span class="line">-verbose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 混淆时所采用的算法</span></span><br><span class="line">-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*</span><br><span class="line"></span><br><span class="line"><span class="comment">#-------------start：记录生成的日志数据,gradle build时在本项目根目录输出-------------#</span></span><br><span class="line"><span class="comment">#apk 包内所有 class 的内部结构</span></span><br><span class="line">-dump proguard/class_files.txt</span><br><span class="line"><span class="comment">#未混淆的类和成员</span></span><br><span class="line">-printseeds proguard/seeds.txt</span><br><span class="line"><span class="comment">#列出从 apk 中删除的代码</span></span><br><span class="line">-printusage proguard/unused.txt</span><br><span class="line"><span class="comment">#混淆前后的映射</span></span><br><span class="line">-printmapping proguard/mapping.txt</span><br><span class="line"><span class="comment">#-------------End：记录生成的日志数据,gradle build时在本项目根目录输出-------------#</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#避免混淆泛型 如果混淆报错建议关掉</span></span><br><span class="line"><span class="comment">#-keepattributes Signature</span></span><br><span class="line"><span class="comment">#保护注解</span></span><br><span class="line">-keepattributes *Annotation*</span><br><span class="line"><span class="comment"># 保持哪些类不被混淆</span></span><br><span class="line">-keep public class * extends android.support.v4.app.Fragment</span><br><span class="line">-keep public class * extends android.app.Activity</span><br><span class="line">-keep public class * extends android.app.Application</span><br><span class="line">-keep public class * extends android.app.Service</span><br><span class="line">-keep public class * extends android.content.BroadcastReceiver</span><br><span class="line">-keep public class * extends android.content.ContentProvider</span><br><span class="line">-keep public class * extends android.app.backup.BackupAgentHelper</span><br><span class="line">-keep public class * extends android.preference.Preference</span><br><span class="line">-keep public class com.android.vending.licensing.ILicensingService</span><br><span class="line">-dontnote com.android.vending.licensing.ILicensingService</span><br><span class="line"><span class="comment">#如果有引用v4包可以添加下面这行</span></span><br><span class="line"><span class="comment">#-keep public class * extends android.support.v4.app.Fragment</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#忽略警告</span></span><br><span class="line">-ignorewarning</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果引用了v4或者v7包</span></span><br><span class="line">-dontwarn android.support.**</span><br><span class="line"></span><br><span class="line"><span class="comment">#保持 native 方法不被混淆</span></span><br><span class="line">-keepclasseswithmembernames class * &#123;</span><br><span class="line">    native &lt;methods&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#保持自定义控件类不被混淆</span></span><br><span class="line">-keepclasseswithmembers class * &#123;</span><br><span class="line">    public &lt;init&gt;(android.content.Context, android.util.AttributeSet);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-keepclasseswithmembers  class * &#123;</span><br><span class="line">    public &lt;init&gt;(android.content.Context, android.util.AttributeSet, int);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-keep public class * extends android.view.View &#123;</span><br><span class="line">    public &lt;init&gt;(android.content.Context);</span><br><span class="line">    public &lt;init&gt;(android.content.Context, android.util.AttributeSet);</span><br><span class="line">    public &lt;init&gt;(android.content.Context, android.util.AttributeSet, int);</span><br><span class="line">    public void <span class="built_in">set</span>*(...);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#保持 Parcelable 不被混淆</span></span><br><span class="line">-keep class * implements android.os.Parcelable &#123;</span><br><span class="line">  public static final android.os.Parcelable<span class="variable">$Creator</span> *;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#保持 Serializable 不被混淆</span></span><br><span class="line">-keepnames class * implements java.io.Serializable</span><br><span class="line"></span><br><span class="line"><span class="comment">#保持 Serializable 不被混淆并且enum 类也不被混淆</span></span><br><span class="line">-keepclassmembers class * implements java.io.Serializable &#123;</span><br><span class="line">    static final long serialVersionUID;</span><br><span class="line">    private static final java.io.ObjectStreamField[] serialPersistentFields;</span><br><span class="line">    !static !transient &lt;fields&gt;;</span><br><span class="line">    !private &lt;fields&gt;;</span><br><span class="line">    !private &lt;methods&gt;;</span><br><span class="line">    private void writeObject(java.io.ObjectOutputStream);</span><br><span class="line">    private void readObject(java.io.ObjectInputStream);</span><br><span class="line">    java.lang.Object writeReplace();</span><br><span class="line">    java.lang.Object readResolve();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#保持枚举 enum 类不被混淆</span></span><br><span class="line">-keepclassmembers enum * &#123;</span><br><span class="line">    public static **[] values();</span><br><span class="line">    public static ** valueOf(java.lang.String);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-keepclassmembers class * &#123;</span><br><span class="line">    public void *ButtonClicked(android.view.View);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#不混淆资源类</span></span><br><span class="line">-keepclassmembers class **.R$* &#123;</span><br><span class="line">    public static &lt;fields&gt;;</span><br><span class="line">&#125;</span><br><span class="line">-keep class **.R &#123; *; &#125;</span><br><span class="line">-keep class **.R$* &#123; *; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#移除Log类打印各个等级日志的代码，打正式包的时候可以做为禁log使用，这里可以作为禁止log打印的功能使用，另外的一种实现方案是通过BuildConfig.DEBUG的变量来控制</span></span><br><span class="line"><span class="comment">#-assumenosideeffects class android.util.Log &#123;</span></span><br><span class="line"><span class="comment">#    public static *** v(...);</span></span><br><span class="line"><span class="comment">#    public static *** i(...);</span></span><br><span class="line"><span class="comment">#    public static *** d(...);</span></span><br><span class="line"><span class="comment">#    public static *** w(...);</span></span><br><span class="line"><span class="comment">#    public static *** e(...);</span></span><br><span class="line"><span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">-keepclassmembers class * &#123;</span><br><span class="line">    @android.webkit.JavascriptInterface &lt;methods&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-keep class * extends java.util.ListResourceBundle &#123;</span><br><span class="line">    protected Object[][] getContents();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>ReactNative混淆配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#------------------------Start: React Native------------------------#</span></span><br><span class="line"><span class="comment"># Keep our interfaces so they can be used by other ProGuard rules.</span></span><br><span class="line"><span class="comment"># See http://sourceforge.net/p/proguard/bugs/466/</span></span><br><span class="line">-keep,allowobfuscation @interface com.facebook.proguard.annotations.DoNotStrip</span><br><span class="line">-keep,allowobfuscation @interface com.facebook.proguard.annotations.KeepGettersAndSetters</span><br><span class="line">-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip</span><br><span class="line"><span class="comment"># Do not strip any method/class that is annotated with @DoNotStrip</span></span><br><span class="line">-keep @com.facebook.proguard.annotations.DoNotStrip class *</span><br><span class="line">-keep @com.facebook.common.internal.DoNotStrip class *</span><br><span class="line">-keepclassmembers class * &#123;</span><br><span class="line">    @com.facebook.proguard.annotations.DoNotStrip *;</span><br><span class="line">    @com.facebook.common.internal.DoNotStrip *;</span><br><span class="line">&#125;</span><br><span class="line">-keepclassmembers @com.facebook.proguard.annotations.KeepGettersAndSetters class * &#123;</span><br><span class="line">    void <span class="built_in">set</span>*(***);</span><br><span class="line">    *** get*();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-keep class com.facebook.react.cxxbridge.ModuleRegistryHolder &#123; *; &#125;</span><br><span class="line">-keep class com.facebook.react.cxxbridge.CatalystInstanceImpl &#123; *; &#125;</span><br><span class="line">-keep class com.facebook.react.cxxbridge.JavaScriptExecutor &#123; *; &#125;</span><br><span class="line">-keep class com.facebook.react.bridge.queue.NativeRunnable &#123; *; &#125;</span><br><span class="line">-keep class com.facebook.react.bridge.ExecutorToken &#123; *; &#125;</span><br><span class="line">-keep class com.facebook.react.bridge.ReadableType &#123; *; &#125;</span><br><span class="line"></span><br><span class="line">-keep class * extends com.facebook.react.bridge.JavaScriptModule &#123; *; &#125;</span><br><span class="line">-keep class * extends com.facebook.react.bridge.NativeModule &#123; *; &#125;</span><br><span class="line">-keepclassmembers,includedescriptorclasses class * &#123; native &lt;methods&gt;; &#125;</span><br><span class="line">-keepclassmembers class *  &#123; @com.facebook.react.uimanager.UIProp &lt;fields&gt;; &#125;</span><br><span class="line">-keepclassmembers class *  &#123; @com.facebook.react.uimanager.annotations.ReactProp &lt;methods&gt;; &#125;</span><br><span class="line">-keepclassmembers class *  &#123; @com.facebook.react.uimanager.annotations.ReactPropGroup &lt;methods&gt;; &#125;</span><br><span class="line">-dontwarn com.facebook.react.**</span><br><span class="line"><span class="comment"># stetho</span></span><br><span class="line">-dontwarn com.facebook.stetho.**</span><br><span class="line"></span><br><span class="line">-keep class android.text.StaticLayout</span><br><span class="line"><span class="comment">#------------------------End: React Native------------------------#</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Gson</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes Signature</span><br><span class="line">-keepattributes *Annotation*</span><br><span class="line">-keep class sun.misc.Unsafe &#123; *; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Application classes that will be serialized/deserialized over Gson</span></span><br><span class="line"><span class="comment"># 下面替换成自己的实体类</span></span><br><span class="line">-keep class com.example.bean.** &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Butter Knife</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-keep class butterknife.** &#123; *; &#125;</span><br><span class="line">-dontwarn butterknife.internal.**</span><br><span class="line">-keep class **$<span class="variable">$ViewBinder</span> &#123; *; &#125;</span><br><span class="line">-keepclasseswithmembernames class * &#123;</span><br><span class="line">    @butterknife.* &lt;fields&gt;;</span><br><span class="line">&#125;</span><br><span class="line">-keepclasseswithmembernames class * &#123;</span><br><span class="line">    @butterknife.* &lt;methods&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Okio</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-dontwarn com.squareup.**  </span><br><span class="line">-dontwarn okio.**  </span><br><span class="line">-keep public class org.codehaus.* &#123; *; &#125;  </span><br><span class="line">-keep public class java.nio.* &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>OkHttp3</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-dontwarn com.squareup.okhttp3.**</span><br><span class="line">-keep class com.squareup.okhttp3.** &#123; *;&#125;</span><br><span class="line">-dontwarn okio.**</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Retrofit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-dontwarn retrofit2.**</span><br><span class="line">-keep class retrofit2.** &#123; *; &#125;</span><br><span class="line">-keepattributes Signature</span><br><span class="line">-keepattributes Exceptions</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Ormlite</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes *DatabaseField*  </span><br><span class="line">-keepattributes *DatabaseTable*  </span><br><span class="line">-keepattributes *SerializedName*  </span><br><span class="line">-keep class com.j256.**  </span><br><span class="line">-keepclassmembers class com.j256.** &#123; *; &#125;  </span><br><span class="line">-keep enum com.j256.**  </span><br><span class="line">-keepclassmembers enum com.j256.** &#123; *; &#125;  </span><br><span class="line">-keep interface com.j256.**  </span><br><span class="line">-keepclassmembers interface com.j256.** &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>RxJava RxAndroid</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-dontwarn sun.misc.**  </span><br><span class="line">-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* &#123;  </span><br><span class="line">  long producerIndex;  </span><br><span class="line">  long consumerIndex;  </span><br><span class="line">&#125;  </span><br><span class="line">-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef &#123;  </span><br><span class="line">  rx.internal.util.atomic.LinkedQueueNode producerNode;  </span><br><span class="line">&#125;  </span><br><span class="line">-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef &#123;  </span><br><span class="line">  rx.internal.util.atomic.LinkedQueueNode consumerNode;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>AndroidEventBus</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-keep class org.simple.** &#123; *; &#125;</span><br><span class="line">-keep interface org.simple.** &#123; *; &#125;</span><br><span class="line">-keepclassmembers class * &#123;</span><br><span class="line">    @org.simple.eventbus.Subscriber &lt;methods&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>EventBus</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes *Annotation*</span><br><span class="line">-keepclassmembers class ** &#123;</span><br><span class="line">    @org.greenrobot.eventbus.Subscribe &lt;methods&gt;;</span><br><span class="line">&#125;</span><br><span class="line">-keep enum org.greenrobot.eventbus.ThreadMode &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Glide</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-keep public class * implements com.bumptech.glide.module.GlideModule</span><br><span class="line">-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** &#123;</span><br><span class="line">  **[] <span class="variable">$VALUES</span>;</span><br><span class="line">  public *;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="混淆语法解析"><a class="header-anchor" href="#混淆语法解析"></a>混淆语法解析</h2>
+<ul>
+<li>
+<p>保留选项（配置不进行处理的内容）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保护指定的类文件和类的成员</span></span><br><span class="line">-keep &#123;modifier&#125; &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 保护指定类的成员，如果此类受到保护他们会保护的更好</span></span><br><span class="line">-keepclassmembers &#123;modifier&#125; &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 保护指定的类和类的成员，但条件是所有指定的类和类成员是要存在。</span></span><br><span class="line">-keepclasseswithmembers &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 保护指定的类和类的成员的名称（如果他们不会压缩步骤中删除）</span></span><br><span class="line">-keepnames &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 保护指定的类的成员的名称（如果他们不会压缩步骤中删除）</span></span><br><span class="line">-keepclassmembernames &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 保护指定的类和类的成员的名称，如果所有指定的类成员出席（在压缩步骤之后）</span></span><br><span class="line">-keepclasseswithmembernames &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 列出类和类的成员-keep选项的清单，标准输出到给定的文件</span></span><br><span class="line">-printseeds &#123;filename&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>压缩</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不压缩输入的类文件</span></span><br><span class="line">-dontshrink</span><br><span class="line"><span class="comment"># 打印为什么一个类或类的成员被保护,这对检查一个输出文件中的类的结果有帮助.</span></span><br><span class="line">-whyareyoukeeping &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 将被删除的元素输出到文件</span></span><br><span class="line">-printusage &#123;filename&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>优化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不优化输入的类文件</span></span><br><span class="line">-dontoptimize</span><br><span class="line"><span class="comment"># 优化时假设指定的方法，没有任何副作用</span></span><br><span class="line">-assumenosideeffects &#123;class_specification&#125;</span><br><span class="line"><span class="comment"># 优化时允许访问并修改有修饰符的类和类的成员</span></span><br><span class="line">-allowaccessmodification</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>混淆</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不混淆输入的类文件</span></span><br><span class="line">-dontobfuscate</span><br><span class="line"><span class="comment"># 使用给定文件中的关键字作为要混淆方法的名称</span></span><br><span class="line">-obfuscationdictionary &#123;filename&#125;</span><br><span class="line"><span class="comment"># 混淆时应用侵入式重载</span></span><br><span class="line">-overloadaggressively</span><br><span class="line"><span class="comment"># 确定统一的混淆类的成员名称来增加混淆</span></span><br><span class="line">-useuniqueclassmembernames</span><br><span class="line"><span class="comment"># 重新包装所有重命名的包并放在给定的单一包中</span></span><br><span class="line">-flattenpackagehierarchy &#123;package_name&#125;</span><br><span class="line"><span class="comment"># 重新包装所有重命名的类文件中放在给定的单一包中</span></span><br><span class="line">-repackageclass &#123;package_name&#125;</span><br><span class="line"><span class="comment"># 混淆时不会产生形形色色的类名</span></span><br><span class="line">-dontusemixedcaseclassnames</span><br><span class="line"><span class="comment"># 保护给定的可选属性，例如LineNumberTable, LocalVariableTable, SourceFile, Deprecated, Synthetic, Signature, and InnerClasses.</span></span><br><span class="line">-keepattributes &#123;attribute_name,...&#125;</span><br><span class="line"><span class="comment"># 设置源文件中给定的字符串常量</span></span><br><span class="line">-renamesourcefileattribute &#123;string&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/26/RN-Dir-Structure/" rel="next" title="React Native项目目录结构以及常用命令">
+                <i class="fa fa-chevron-left"></i> React Native项目目录结构以及常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/04/Mini-Program-Custom-Scaffold/" rel="prev" title="微信小程序自制脚手架">
+                微信小程序自制脚手架 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/img/bbbond.jpg" alt="Jinweiyang">
+            
+              <p class="site-author-name" itemprop="name">Jinweiyang</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/BBBOND" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jwy8645@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/BBBOND" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一言不合上实例"><span class="nav-number">2.</span> <span class="nav-text">一言不合上实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#混淆语法解析"><span class="nav-number">3.</span> <span class="nav-text">混淆语法解析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-[object Object]"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinweiyang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("PDyc1k64m4yPjSjTP2Ct5rpP-gzGzoHsz", "yo6icFiCK0aWohGIB8jGleUk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
